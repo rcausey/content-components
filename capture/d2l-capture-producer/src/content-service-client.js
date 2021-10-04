@@ -101,6 +101,16 @@ export default class ContentServiceClient {
 		});
 	}
 
+	publishDraftCaptions({
+		contentId,
+		revisionId,
+	}) {
+		return this._fetch({
+			path: `/api/${this.tenantId}/content/${contentId}/revisions/${revisionId}/captions/drafts/publish`,
+			method: 'POST',
+		});
+	}
+
 	updateCaptions({ contentId, revisionId, draft = false, locale, captionsVttText }) {
 		return this._fetch({
 			path: `/api/${this.tenantId}/content/${contentId}/revisions/${revisionId}/captions/${locale}`,
