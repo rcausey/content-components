@@ -30,22 +30,31 @@ npm install @brightspace/content-components
 <script type="module">
 	import '@brightspace/content-components/core/d2l-content-viewer.js';
 </script>
-<d2l-content-viewer>My element</d2l-content-viewer>
+<d2l-content-viewer href="<media-url>" captions-href="<captions-url>">My element</d2l-content-viewer>
 ```
+
+**Attributes:**
+
+| Attribute | Type | Default | Description |
+|--|--|--|--|
+| href | String |  | The url used to fetch the media resource. |
+| captionsHref | String |  | The url used to fetch the captions resource. |
+| activity | String |  | The hypermedia entity used to fetch the media and captions resource. |
+| allowDownload | Boolean | false | An attribtue used by d2l-labs-media-player to allow download. |
+| allowDownloadOnError | Boolean | false | An attribtue used by d2l-labs-media-player to allow download on error. |
+| framed | Boolean | false | Determines whether to use framed or unframed auth for d2l-fetch when using the hypermedia entity. |
 
 **Properties:**
 
-| Property | Type | Description |
-|--|--|--|
-| | | |
+| Property | Type | Get/Set | Description |
+|--|--|--|--|
+| captionSignedUrls | Array | Get & Set | An array of caption signed url objects. Each signed url object contains the signed url value, locale, and the amount of time until the signed url expires. |
 
-**Accessibility:**
+**Events:**
 
-To make your usage of `d2l-content-viewer` accessible, use the following properties when applicable:
-
-| Attribute | Description |
+| Event | Description |
 |--|--|
-| | |
+| @cs-content-loaded | Dispatched when both the media and captions resources are loaded. |
 
 ## Developing, Testing and Contributing
 

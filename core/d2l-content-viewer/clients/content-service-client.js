@@ -1,19 +1,30 @@
 import * as querystring from '@chaitin/querystring';
-import auth from 'd2l-fetch-auth/src/unframed/index.js';
+import fetchAuthUnframed from 'd2l-fetch-auth/src/unframed/index.js';
 import { d2lfetch } from 'd2l-fetch/src/index.js';
-
-d2lfetch.use({ name: 'auth', fn: auth });
 
 export default class ContentServiceClient {
 	constructor({
 		href,
+		captionsHref,
 	}) {
 		this.href = href;
+		this.captionsHref = captionsHref;
+		this.d2lfetch = d2lfetch.addTemp({
+			name: 'auth',
+			fn: fetchAuthUnframed
+		});
+	}
+
+	getCaptions() {
+		return this._fetch({
+			path: this.captionsHref
+		});
 	}
 
 	getDownloadUrl() {
 		return this._fetch({
-			path: this.href
+			path: this.href,
+			doNotUseCache: false
 		});
 	}
 
@@ -23,10 +34,16 @@ export default class ContentServiceClient {
 		query,
 		body,
 		extractJsonBody = true,
-		headers = new Headers()
+		headers = new Headers(),
+		doNotUseCache = true
 	}) {
 		if (body) {
 			headers.append('Content-Type', 'application/json');
+		}
+
+		if (doNotUseCache) {
+			headers.append('pragma', 'no-cache');
+			headers.append('cache-control', 'no-cache');
 		}
 
 		const requestInit = {
@@ -38,7 +55,7 @@ export default class ContentServiceClient {
 		};
 		const request = new Request(this._url(path, query), requestInit);
 
-		const response = await d2lfetch.fetch(request);
+		const response = await this.d2lfetch.fetch(request);
 		if (!response.ok) {
 			throw new Error(response.statusText);
 		}
