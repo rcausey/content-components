@@ -148,11 +148,12 @@ export class Uploader {
 	async _uploadWorkflowAsync({ file, extension }) {
 		try {
 			this.runningJobs += 1;
-			const content = await this.apiClient.createContent();
+			const content = await this.apiClient.createContent({
+				title: file.name,
+			});
 			const revision = await this.apiClient.createRevision({
 				contentId: content.id,
 				body: {
-					title: file.name,
 					extension,
 					sourceFormat: 'hd',
 					formats: ['ld'],

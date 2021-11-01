@@ -8,14 +8,14 @@ describe('content-list', () => {
 			id: 'some-id',
 			revisionId: 'some-rev-id',
 			lastRevType: 'scorm',
-			lastRevTitle: 'some title',
+			title: 'some title',
 			updatedAt: '2020-02-21T17:42:42.679Z'
 		},
 		{
 			id: 'some-other-id',
 			revisionId: 'some-other-rev-id',
 			lastRevType: 'video',
-			lastRevTitle: 'some title 2',
+			title: 'some title 2',
 			updatedAt: '2020-01-21T17:42:42.679Z'
 		}
 	];
@@ -130,11 +130,11 @@ describe('content-list', () => {
 				upload: {},
 				content: {
 					id: newUploadContentId,
+					title: 'AAAA',
 					createdAt: now.toISOString()
 				},
 				revision: {
 					id: '67890',
-					title: 'AAAA',
 					type: 'PNG'
 				}
 			};
@@ -146,11 +146,11 @@ describe('content-list', () => {
 				upload: {},
 				content: {
 					id: newUploadContentId1,
+					title: 'ZZZZ',
 					createdAt: now.toISOString()
 				},
 				revision: {
 					id: '67890',
-					title: 'ZZZZ',
 					type: 'PNG'
 				}
 			};
@@ -171,11 +171,11 @@ describe('content-list', () => {
 				upload: {},
 				content: {
 					id: newUploadContentId,
+					title: 'ZZZZ1',
 					createdAt: now.toISOString()
 				},
 				revision: {
 					id: '67890',
-					title: 'ZZZZ1',
 					type: 'PNG'
 				}
 			};
@@ -187,11 +187,11 @@ describe('content-list', () => {
 				upload: {},
 				content: {
 					id: newUploadContentId1,
+					title: 'AAAA1',
 					createdAt: now.toISOString()
 				},
 				revision: {
 					id: '67890',
-					title: 'AAAA1',
 					type: 'PNG'
 				}
 			};
@@ -209,13 +209,13 @@ describe('content-list', () => {
 
 			const contentListItem = el.shadowRoot.querySelector(`#${testContentItems[0].id}`);
 			const newTitle = 'changed title';
-			expect(el.contentItems[0].lastRevTitle).to.equal(testContentItems[0].lastRevTitle);
+			expect(el.contentItems[0].title).to.equal(testContentItems[0].title);
 			contentListItem.dispatchRenameEvent(newTitle);
 			await el.updateComplete;
 
 			const oneMinuteAgo = Date.now() - (1000 * 60);
 			const contentItemDate = new Date(el.contentItems[0].updatedAt);
-			expect(el.contentItems[0].lastRevTitle).to.equal(newTitle);
+			expect(el.contentItems[0].title).to.equal(newTitle);
 			expect(contentItemDate > oneMinuteAgo).to.be.true;
 		});
 	});

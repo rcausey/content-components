@@ -28,6 +28,19 @@ npm install @brightspace-ui-labs/video-producer
 
 ### Usage
 (See demo page for a more detailed example)
+
+### HTML Example
+
+```html
+	<d2l-capture-producer
+		endpoint="http://content-service-staging.brightspace.d2l.com"
+		tenant-id="0840bb02-1f06-431d-9ae8-70c18a4dbf6b"
+		content-id="c2c54ba6-845c-4711-8aa3-2af37827b344"
+	></d2l-capture-producer>
+```
+
+### LitElement Example
+
 ```js
 import '@brightspace-ui-labs/video-producer/video-producer.js';
 
@@ -39,7 +52,6 @@ const handleMetadataChanged = e => (metadata = e.detail);
 const contentServiceEndpoint = 'http://content-service-staging.brightspace.d2l.com';
 const tenantId = '0840bb02-1f06-431d-9ae8-70c18a4dbf6b';
 const contentId='c2c54ba6-845c-4711-8aa3-2af37827b344';
-const revisionId='51aa69b0-5eae-4f11-87b8-b30903c7df69';
 
 class MyComponent {
 	// ...

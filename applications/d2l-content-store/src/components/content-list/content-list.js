@@ -112,12 +112,13 @@ class ContentList extends DependencyRequester(InternalLocalizeMixin(NavigationMi
 			return;
 		}
 
-		const { id: lastRevId, title: lastRevTitle, type: lastRevType } = item.revision;
+		const { title } = item.content;
+		const { id: lastRevId, type: lastRevType } = item.revision;
 		const { id } = item.content;
 		const updatedAt = (new Date()).toISOString();
 
 		await this.insertIntoContentItemsBasedOnSort({
-			id, lastRevType, lastRevTitle, lastRevId, updatedAt
+			id, lastRevType, title, lastRevId, updatedAt
 		});
 	}
 
@@ -170,7 +171,7 @@ class ContentList extends DependencyRequester(InternalLocalizeMixin(NavigationMi
 		if (id && title) {
 			const index = this.contentItems.findIndex(c => c.id === id);
 			if (index >= 0 && index < this.contentItems.length) {
-				this.contentItems[index].lastRevTitle = title;
+				this.contentItems[index].title = title;
 				this.contentItems[index][this.dateField] = (new Date()).toISOString();
 				this.requestUpdate();
 			}
@@ -194,12 +195,12 @@ class ContentList extends DependencyRequester(InternalLocalizeMixin(NavigationMi
 
 			case 'lastRevTitle.keyword:desc':
 				return e => {
-					return e.lastRevTitle.toLowerCase() <= item.lastRevTitle.toLowerCase();
+					return e.title.toLowerCase() <= item.title.toLowerCase();
 				};
 
 			case 'lastRevTitle.keyword:asc':
 				return e => {
-					return e.lastRevTitle.toLowerCase() >= item.lastRevTitle.toLowerCase();
+					return e.title.toLowerCase() >= item.title.toLowerCase();
 				};
 
 			default:
@@ -235,7 +236,7 @@ class ContentList extends DependencyRequester(InternalLocalizeMixin(NavigationMi
 		this.totalResults = searchResult.hits.total;
 		this.searchQueryStart += searchResult.hits.hits.length;
 		this.hasNextPage = this.searchQueryStart < this.totalResults;
-		this.contentItems.push(...searchResult.hits.hits.map(item => item._source));
+		this.contentItems.push(...searchResult.hits.hits.map(item => ({ ...item._source, title: item._source.title || item._source.lastRevTitle })));
 		this.loading = false;
 	}
 
@@ -326,12 +327,12 @@ class ContentList extends DependencyRequester(InternalLocalizeMixin(NavigationMi
 			revision-id=${item.lastRevId}
 			selectable
 			type=${type}
-			title=${item.lastRevTitle}
+			title=${item.title}
 			@content-list-item-renamed=${this.contentListItemRenamedHandler}
 			@content-list-item-deleted=${this.contentListItemDeletedHandler}
 		>
 			<content-icon type="${iconType}" slot="icon"></content-icon>
-			<div slot="title" class="title">${item.lastRevTitle}</div>
+			<div slot="title" class="title">${item.title}</div>
 			<div slot="type">${type}</div>
 			<relative-date slot="date" value=${item[this.dateField]}></relative-date>
 		</content-list-item>

@@ -329,6 +329,7 @@ class VideoProducerCaptions extends InternalLocalizeMixin(LitElement) {
 				overflow-y: scroll;
 				padding: 0px 10px 10px 10px;
 				position: relative;
+				width: 95%;
 			}
 
 			.d2l-video-producer-captions-cues-list-bottom {

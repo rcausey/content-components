@@ -76,7 +76,7 @@ export const contentSearchMixin = superClass => class extends superClass {
 				id: result.id,
 				revisionId: result.lastRevId,
 				thumbnail: result.thumbnail,
-				title: result.lastRevTitle,
+				title: result.title || result.lastRevTitle,
 				type: result.lastRevType,
 				updatedAt: result.updatedAt,
 				uploadDate: formatDate(new Date(result.createdAt)),

@@ -51,7 +51,7 @@ class ContentListItem extends DependencyRequester(navigationMixin(InternalLocali
 		super();
 		this.selectable = true;
 		this.dropdownBoundary = {};
-		this.revision = null;
+		this.content = null;
 		this.confirmDisabled = false;
 	}
 
@@ -223,18 +223,14 @@ class ContentListItem extends DependencyRequester(navigationMixin(InternalLocali
 	async rename(newTitle) {
 		if (this.title !== newTitle) {
 			this.dispatchRenameEvent(newTitle);
-			if (!this.revision) {
-				this.revision = await this.apiClient.getRevision({
-					contentId: this.id,
-					revisionId: this.revisionId
-				});
-			}
 
-			const updatedRevision = Object.assign({}, this.revision, { title: newTitle });
-			await this.apiClient.updateRevision({
-				contentId: this.id,
-				revisionId: this.revisionId,
-				revision: updatedRevision
+			if (!this.content) {
+				this.content = await this.apiClient.getContent(this.id);
+			}
+			const updatedContent = Object.assign({}, this.content, { title: newTitle });
+			await this.apiClient.updateContent({
+				id: this.id,
+				body: updatedContent,
 			});
 		}
 	}

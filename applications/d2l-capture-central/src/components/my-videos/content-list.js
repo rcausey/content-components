@@ -116,7 +116,8 @@ class ContentList extends DependencyRequester(InternalLocalizeMixin(NavigationMi
 			return;
 		}
 
-		const { id: revisionId, title, type } = item.revision;
+		const { title } = item.content;
+		const { id: revisionId, type } = item.revision;
 		const { id } = item.content;
 		const updatedAt = (new Date()).toISOString();
 
@@ -197,12 +198,12 @@ class ContentList extends DependencyRequester(InternalLocalizeMixin(NavigationMi
 
 			case 'lastRevTitle.keyword:desc':
 				return e => {
-					return e.lastRevTitle.toLowerCase() <= item.lastRevTitle.toLowerCase();
+					return e.title.toLowerCase() <= item.title.toLowerCase();
 				};
 
 			case 'lastRevTitle.keyword:asc':
 				return e => {
-					return e.lastRevTitle.toLowerCase() >= item.lastRevTitle.toLowerCase();
+					return e.title.toLowerCase() >= item.title.toLowerCase();
 				};
 
 			default:
